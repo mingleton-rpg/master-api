@@ -1,0 +1,6 @@
+{
+    "apiServer" : {
+        "port" : 4242,
+        "authPassKey" : "joe_mama"
+    }
+}

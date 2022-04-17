@@ -1,0 +1,63 @@
+[
+    {
+        "id" : 0,
+        "name" : "weapon (melee)",
+        "emojiName" : "🗡",
+        "maxStackAmount" : 1,
+        "isEquippable" : false,
+        "functions" : [
+            { "label": "swing", "id": "swing_weapon_", "style" : 2 }
+        ]
+    },
+    {
+        "id" : 1,
+        "name" : "weapon (ranged)",
+        "emojiName" : "🏹",
+        "maxStackAmount" : 1,
+        "isEquippable" : false,
+        "functions" : [
+            { "label": "shoot", "id": "shoot_weapon_", "style" : 2 }
+        ]
+    },
+    {
+        "id" : 2,
+        "name" : "weapon (throwable)",
+        "emojiName" : "🧱",
+        "maxStackAmount" : 16,
+        "isEquippable" : false,
+        "functions" : [
+            { "label": "throw", "id": "throw_weapon_", "style" : 2 }
+        ]
+    },
+    {
+        "id" : 3,
+        "name" : "armour",
+        "emojiName" : "🛡",
+        "maxStackAmount" : 1,
+        "isEquippable" : true,
+        "functions" : [
+            { "label": "equip", "id": "equip_armour_", "style" : 1 },
+            { "label": "unequip", "id": "unequip_armour_", "style" : 2 }
+        ]
+    },
+    {
+        "id" : 4,
+        "name" : "food",
+        "emojiName" : "🍎",
+        "maxStackAmount" : 16,
+        "isEquippable" : false,
+        "functions" : [
+            { "label": "consume", "id": "consume_item_", "style" : 2 }
+        ]
+    },
+    {
+        "id" : 5,
+        "name" : "potion",
+        "emojiName" : "🧪",
+        "maxStackAmount" : 16,
+        "isEquippable" : false,
+        "functions" : [
+            { "label": "consume", "id": "consume_item_", "style" : 2 }
+        ]
+    }
+]
