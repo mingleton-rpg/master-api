@@ -85,7 +85,7 @@ async function transferItem(client, itemID, newOwnerID) {
 
 
 // ENDPOINTS ---------------------------------------------------------------------------
-router.get('/:id', async function (req, res) {                   // Get item by ID
+router.get('/:id', async function (req, res) {                          // Get item by ID
     const client = req.client;
 
     var query = 'SELECT  * FROM items WHERE id = $1;';
@@ -96,17 +96,20 @@ router.get('/:id', async function (req, res) {                   // Get item by 
 
     // Assemble object
     const item = {
+        id: result.rows[0].id,
         name: result.rows[0].name,
         ownerID: result.rows[0].owner_id,
         rarity: itemRarities.find(item => item.id === result.rows[0].rarity_id),
         type: itemTypes.find(item => item.id === result.rows[0].type_id),
-        attributes: result.rows[0].attributes
+        attributes: result.rows[0].attributes,
+        isEquipped: result.rows[0].is_equipped,
+        isDropped: result.rows[0].is_dropped,
     }
 
     res.status(200).send(JSON.stringify(item));
 });
 
-router.post('/create/', async function (req, res) {              // Create an item
+router.post('/create/', async function (req, res) {                     // Create an item
     const client = req.client;
 
     const itemInfo = {
@@ -119,7 +122,7 @@ router.post('/create/', async function (req, res) {              // Create an it
     }
 
     if (Object.values(itemInfo).every(x => x === null || x === '')) { 
-        res.status(400).send('Not all required values were provided');
+        res.status(400).send('Not all required values were provided'); return;
     }
 
     const [ success, response ] = await createItems(client, itemInfo.name, itemInfo.rarityID, itemInfo.typeID, itemInfo.amount, itemInfo.ownerID, itemInfo.attributes);
@@ -130,7 +133,7 @@ router.post('/create/', async function (req, res) {              // Create an it
     res.status(200).send(JSON.stringify({ itemIDs: response }));
 });
 
-router.post('/:id/transfer/:newOwnerID/', async function (req, res) {           // Transfer an item
+router.post('/:id/transfer/:newOwnerID/', async function (req, res) {   // Transfer an item
     const client = req.client;
 
     const transferInfo = {
@@ -139,13 +142,63 @@ router.post('/:id/transfer/:newOwnerID/', async function (req, res) {           
     }
 
     if (Object.values(transferInfo).every(x => x === null || x === '')) { 
-        res.status(400).send('Not all required values were provided');
+        res.status(400).send('Not all required values were provided'); return;
     }
 
     const [ success, response ] = await transferItem(client, transferInfo.itemID, transferInfo.newOwnerID);
     if (success === false) { res.status(500).send(response); console.log(response); return; } 
 
     res.status(200).send('Item transferred successfully');
+});
+
+router.post('/:id/equip/:isEquipping/', async function (req, res) {     // Equip/unequip item
+    const client = req.client;
+
+    const itemID = req.params.id;
+    const isEquipping = req.params.isEquipping;
+    if (!itemID || !isEquipping) { res.status(400).send('Missing itemID and/or isEquipping values'); return; }
+
+    // Check if the item exists
+    var query = 'SELECT * FROM items WHERE id = $1;';
+    var params = [ itemID ]; 
+    var err, result = await client.query(query, params);
+    if (err) { res.status(500).send(err); console.log(err); return; }
+    if (result.rows.length === 0) { res.status(404).send('An item with that ID does not exist'); return; }
+
+    // Check if this item can be equipped
+    const itemType = itemTypes.find(item => item.id === result.rows[0].type_id);
+    if (itemType.isEquippable === false) { res.status(403).send('This item cannot be equipped'); return; }
+
+    // Equip/unequip item
+    var query = 'UPDATE items SET is_equipped = $1 WHERE id = $2;';
+    var params = [ isEquipping, itemID ];
+    var err, result = await client.query(query, params);
+    if (err) { res.status(500).send(err); console.log(err); return; }
+
+    res.status(200).send('Item equipped/unequipped successfully');
+});
+
+router.post('/:id/drop/:isDropping/', async function (req, res) {       // Drop/pickup item
+    const client = req.client;
+
+    const itemID = req.params.id;
+    const isDropping = req.params.isDropping;
+    if (!itemID || !isDropping) { res.status(400).send('Missing itemID and/or isDropping values'); return; }
+
+    // Check if the item exists
+    var query = 'SELECT * FROM items WHERE id = $1;';
+    var params = [ itemID ]; 
+    var err, result = await client.query(query, params);
+    if (err) { res.status(500).send(err); console.log(err); return; }
+    if (result.rows.length === 0) { res.status(404).send('An item with that ID does not exist'); return; }
+
+    // Drop/pickup item
+    var query = 'UPDATE items SET is_dropped = $1 AND is_equipped = $2 WHERE id = $3;';
+    var params = [ isDropping, false, itemID ];
+    var err, result = await client.query(query, params);
+    if (err) { res.status(500).send(err); console.log(err); return; }
+
+    res.status(200).send('Item dropped/picked up successfully');
 });
 
 

@@ -13,6 +13,10 @@ const itemTypes = require('../json/types.json');
 
 
 // RARITY ENDPOINTS -------------------------------------------------------------------
+router.get('/rarity/list/', async function (req, res) {         // Get a list of rarities
+     res.status(200).send(JSON.stringify(itemRarities));
+});
+
 router.get('/rarity/id/:id', async function (req, res) {        // Get rarity by ID
     console.log('Requesting item rarity by ID with params', req.params);
 
@@ -42,6 +46,10 @@ router.get('/rarity/name/:name', async function (req, res) {    // Get rarity by
 
 
 // TYPE ENDPOINTS --------------------------------------------------------------------
+router.get('/type/list/', async function (req, res) {           // Get a list of types
+    res.status(200).send(JSON.stringify(itemTypes));
+});
+
 router.get('/type/id/:id', async function (req, res) {          // Get type by ID
     console.log('Requesting item type by ID with params', req.params);
 

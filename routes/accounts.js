@@ -76,7 +76,29 @@ async function getInventory(client, userID) {
 
 
 // ENDPOINTS --------------------------------------------------------------------------
-router.get('/:id', async function (req, res) {                          // Get an account by ID
+router.get('/leaderboard/', async function (req, res) {      // Get a list of all users, ordered by dollars
+    console.log('Requesting account leaderboard');
+    const client = req.client;
+
+    var query = 'SELECT * FROM accounts ORDER BY dollars DESC;';
+    var err, result = await client.query(query); 
+    if (err) { res.status(500).send('Internal server error'); return; }
+
+    // Assemble JSON information for each
+    let accountList = [];
+    for (account of result.rows) { 
+        const accountInfo = {
+            id: account.id,
+            dollars: account.dollars
+        }
+        accountList.push(accountInfo);
+    }
+
+    // Send to caller
+    res.status(200).send(JSON.stringify(accountList));
+});
+
+router.get('/:id/', async function (req, res) {                          // Get an account by ID
     console.log('Requesting account by ID with params', req.params);
     const client = req.client;
 
@@ -107,7 +129,38 @@ router.get('/:id', async function (req, res) {                          // Get a
     res.status(200).send(JSON.stringify(account));
 });
 
-router.post('/:id/add-hp/:amount', async function (req, res) {          // Add or remove account HP
+router.post('/create/:id/', async function (req, res) {         // Creates an account with default stats
+    console.log('Requesting to create account with params', req.params);
+    const client = req.client;
+
+    const userID = req.params.id;
+    if (!userID) { res.status(400).send('User ID parameter not supplied.'); return; }
+
+    // Check if this user already exists
+    var query = 'SELECT * FROM accounts WHERE id = $1;';
+    var params = [ userID ];
+    var err, result = await client.query(query, params); 
+    if (err) { res.status(500).send('Internal server error'); return; }
+
+    if (result.rows.length !== 0) { res.status(403).send('A user with that ID already exists'); return; }
+
+    // Create a new account
+    const account = {
+        id: userID,
+        dollars: 100,
+        hp: 100
+    }
+
+    var query = 'INSERT INTO accounts (id, dollars, hp) VALUES ($1, $2, $3);';
+    var params = [ account.id, account.dollars, account.hp ];
+    var err, result = await client.query(query, params); 
+    if (err) { res.status(500).send('Internal server error'); return; }
+
+    // Send to caller
+    res.status(200).send(JSON.stringify(account));
+});
+
+router.post('/:id/add-hp/:amount/', async function (req, res) {          // Add or remove account HP
     console.log('Attempting to modify account HP with params', req.params);
     const client = req.client;
 
@@ -138,7 +191,7 @@ router.post('/:id/add-hp/:amount', async function (req, res) {          // Add o
     res.status(200).send(JSON.stringify({ hp: userNewHealth }));
 });
 
-router.post('/:id/add-dollars/:amount', async function (req, res) {     // Add or remove account dollars
+router.post('/:id/add-dollars/:amount/', async function (req, res) {     // Add or remove account dollars
     console.log('Attempting to modify account dollars with params', req.params);
     const client = req.client;
 
