@@ -11,6 +11,7 @@ const router = express.Router();
 // FILES ------------------------------------------------------------------------------
 const itemRarities = require('../json/rarities.json');
 const itemTypes = require('../json/types.json');
+const { getFaction } = require('./factions');
 
 
 
@@ -117,11 +118,17 @@ router.get('/:id/', async function (req, res) {                          // Get 
     // Get inventory information
     const inventory = await getInventory(client, userID);
 
+    // Get faction
+    let faction = await getFaction(client, userInfo.faction_id, null);
+    if (faction[0] === false) { faction = null; }
+    else { faction = faction[1]; }
+
     // Assemble account object
     const account = { 
         id: userID,
         dollars: userInfo.dollars,
         hp: userInfo.hp,
+        faction: faction,
         inventory: inventory
     }
 

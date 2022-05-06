@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 // MODULES ----------------------------------------------------------------------------
 /** Postgres */
 const { Client } = require('pg');
@@ -20,6 +22,7 @@ app.use(express.static('.'));
 const { router: itemRouter } = require('./routes/items');
 const { router: attributesRouter } = require('./routes/attributes');
 const { router: accountsRouter } = require('./routes/accounts');
+const { router: factionsRouter } = require('./routes/factions');
 
 
 
@@ -68,6 +71,7 @@ app.get('/test', cors(corsOptions), async function (req, res) {
 app.use('/items', cors(corsOptions), itemRouter);
 app.use('/attributes', cors(corsOptions), attributesRouter);
 app.use('/accounts', cors(corsOptions), accountsRouter);
+app.use('/factions', cors(corsOptions), factionsRouter);
 
 
 
