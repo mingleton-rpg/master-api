@@ -17,9 +17,9 @@ client.connect();
     // var params = [];
     // client.query(query, params, function(err, result) { if (err) { console.log(err); }});
 
-    // var query = 'DROP TABLE IF EXISTS items;';
-    // var params = [];
-    // client.query(query, params, function(err, result) { if (err) { console.log(err); }});
+    var query = 'DROP TABLE IF EXISTS items;';
+    var params = [];
+    client.query(query, params, function(err, result) { if (err) { console.log(err); }});
 
     // var query = 'DROP TABLE IF EXISTS factions;';
     // var params = [];
@@ -53,8 +53,8 @@ client.connect();
     // if (err) { console.log(err); }
     // console.log('Created e table');
 
-    var query = 'ALTER TABLE items ADD COLUMN description VARCHAR;';
-    var err, result = await client.query(query);
-    if (err) { console.log(err); }
-    console.log('Updated e table');
+    // var query = 'ALTER TABLE items ADD COLUMN description VARCHAR;';
+    // var err, result = await client.query(query);
+    // if (err) { console.log(err); }
+    // console.log('Updated e table');
 }) ();

@@ -60,6 +60,7 @@ async function getInventory(client, userID) {
             id: item[0].id,
             ownerID: item[0].owner_id,
             name: item[0].name,
+            description: item[0].description,
             type: itemTypes.find(x => x.id == item[0].type_id),
             rarity: itemRarities.find(x => x.id == item[0].rarity_id),
             amount: item.length,
