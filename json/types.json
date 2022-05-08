@@ -31,17 +31,6 @@
     },
     {
         "id" : 3,
-        "name" : "armour",
-        "emojiName" : "🛡",
-        "maxStackAmount" : 1,
-        "isEquippable" : true,
-        "functions" : [
-            { "label": "equip", "id": "equip_armour_", "style" : 1 },
-            { "label": "unequip", "id": "unequip_armour_", "style" : 2 }
-        ]
-    },
-    {
-        "id" : 4,
         "name" : "food",
         "emojiName" : "🍎",
         "maxStackAmount" : 16,
@@ -51,13 +40,67 @@
         ]
     },
     {
-        "id" : 5,
+        "id" : 4,
         "name" : "potion",
         "emojiName" : "🧪",
         "maxStackAmount" : 16,
         "isEquippable" : false,
         "functions" : [
             { "label": "consume", "id": "consume_item_", "style" : 2 }
+        ]
+    },
+    {
+        "id" : 5,
+        "name" : "spell",
+        "emojiName" : "🔮",
+        "maxStackAmount" : 1,
+        "isEquippable" : false,
+        "functions" : [
+            { "label": "cast", "id": "cast_item_", "style" : 2 }
+        ]
+    },
+    {
+        "id" : 6,
+        "name" : "armour (helmet)",
+        "emojiName" : "🛡",
+        "maxStackAmount" : 1,
+        "isEquippable" : true,
+        "functions" : [
+            { "label": "equip", "id": "equip_armour_", "style" : 1 },
+            { "label": "unequip", "id": "unequip_armour_", "style" : 2 }
+        ]
+    },
+    {
+        "id" : 7,
+        "name" : "armour (chestplate)",
+        "emojiName" : "🛡",
+        "maxStackAmount" : 1,
+        "isEquippable" : true,
+        "functions" : [
+            { "label": "equip", "id": "equip_armour_", "style" : 1 },
+            { "label": "unequip", "id": "unequip_armour_", "style" : 2 }
+        ]
+    },
+    {
+        "id" : 8,
+        "name" : "armour (leggings)",
+        "emojiName" : "🛡",
+        "maxStackAmount" : 1,
+        "isEquippable" : true,
+        "functions" : [
+            { "label": "equip", "id": "equip_armour_", "style" : 1 },
+            { "label": "unequip", "id": "unequip_armour_", "style" : 2 }
+        ]
+    },
+    {
+        "id" : 9,
+        "name" : "armour (boots)",
+        "emojiName" : "🛡",
+        "maxStackAmount" : 1,
+        "isEquippable" : true,
+        "functions" : [
+            { "label": "equip", "id": "equip_armour_", "style" : 1 },
+            { "label": "unequip", "id": "unequip_armour_", "style" : 2 }
         ]
     }
 ]

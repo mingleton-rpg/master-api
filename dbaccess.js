@@ -21,9 +21,9 @@ client.connect();
     // var params = [];
     // client.query(query, params, function(err, result) { if (err) { console.log(err); }});
 
-    var query = 'DROP TABLE IF EXISTS factions;';
-    var params = [];
-    client.query(query, params, function(err, result) { if (err) { console.log(err); }});
+    // var query = 'DROP TABLE IF EXISTS factions;';
+    // var params = [];
+    // client.query(query, params, function(err, result) { if (err) { console.log(err); }});
     
     // CREATE ACCOUNTS TABLE
     var query = 'CREATE TABLE IF NOT EXISTS accounts (id BIGINT, dollars INT DEFAULT 100, hp INT DEFAULT 100, faction_id UUID DEFAULT null);';
@@ -32,7 +32,7 @@ client.connect();
     console.log('Created accounts table');
 
     // CREATE ITEMS TABLE
-    var query = 'CREATE TABLE IF NOT EXISTS items (id UUID DEFAULT gen_random_uuid(), owner_id BIGINT, name VARCHAR, type_id INT, rarity_id INT, is_equipped BOOLEAN DEFAULT false, is_dropped BOOLEAN DEFAULT false, attributes JSONB);';
+    var query = 'CREATE TABLE IF NOT EXISTS items (id UUID DEFAULT gen_random_uuid(), owner_id BIGINT, name VARCHAR, description VARCHAR, type_id INT, rarity_id INT, is_equipped BOOLEAN DEFAULT false, is_dropped BOOLEAN DEFAULT false, attributes JSONB);';
     var err, result = await client.query(query);
     if (err) { console.log(err); }
     console.log('Created items table');
@@ -52,4 +52,9 @@ client.connect();
     // var err, result = await client.query(query);
     // if (err) { console.log(err); }
     // console.log('Created e table');
+
+    var query = 'ALTER TABLE items ADD COLUMN description VARCHAR;';
+    var err, result = await client.query(query);
+    if (err) { console.log(err); }
+    console.log('Updated e table');
 }) ();

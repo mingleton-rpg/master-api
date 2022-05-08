@@ -18,6 +18,7 @@ const itemTypes = require('../json/types.json');
 /** Creates items with the given parameters
  * @param {client} client a registered PostgreSQL object
  * @param {String} name name of the item
+ * @param {String} description short lore for the item
  * @param {Int} rarityID ID of the rarity class for that item
  * @param {Int} typeID ID of the type of item
  * @param {String} itemIdentifier item-config-specific identifier, used for stacking
@@ -25,7 +26,7 @@ const itemTypes = require('../json/types.json');
  * @param {DiscordID} ownerID Discord-generated ID of the user this item belongs to
  * @param {Object} attributes item and type-specific attributes assigned to this item
  */
-async function createItems(client, name, rarityID, typeID, amount, ownerID, attributes) {
+async function createItems(client, name, description, rarityID, typeID, amount, ownerID, attributes) {
 
     // Find an item with that type
     const type = itemTypes.find(item => item.id == typeID);
@@ -41,8 +42,8 @@ async function createItems(client, name, rarityID, typeID, amount, ownerID, attr
     // Create the item/s
     var returnIDs = [];
     for (var i = 0; i < amount; i++) {
-        var query = 'INSERT INTO items (name, rarity_id, type_id, owner_id, attributes) VALUES ($1, $2, $3, $4, $5) RETURNING id;';
-        var params = [ name, rarityID, typeID, ownerID, JSON.stringify(attributes) ];
+        var query = 'INSERT INTO items (name, description, rarity_id, type_id, owner_id, attributes) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id;';
+        var params = [ name, description, rarityID, typeID, ownerID, JSON.stringify(attributes) ];
         var err, result = await client.query(query, params);
         if (err) { return [ false, 'Error occurred while creating' ]; }
 
@@ -98,6 +99,7 @@ router.get('/:id', async function (req, res) {                          // Get i
     const item = {
         id: result.rows[0].id,
         name: result.rows[0].name,
+        description: result.rows[0].description,
         ownerID: result.rows[0].owner_id,
         rarity: itemRarities.find(item => item.id === result.rows[0].rarity_id),
         type: itemTypes.find(item => item.id === result.rows[0].type_id),
@@ -112,7 +114,7 @@ router.get('/:id', async function (req, res) {                          // Get i
 router.post('/create/', async function (req, res) {                     // Create an item
     const client = req.client;
 
-    const itemInfo = {
+    let itemInfo = {
         name: req.body.name,
         rarityID: req.body.rarityID,
         typeID: req.body.typeID,
@@ -125,7 +127,12 @@ router.post('/create/', async function (req, res) {                     // Creat
         res.status(400).send('Not all required values were provided'); return;
     }
 
-    const [ success, response ] = await createItems(client, itemInfo.name, itemInfo.rarityID, itemInfo.typeID, itemInfo.amount, itemInfo.ownerID, itemInfo.attributes);
+    // Add non-required variables
+    itemInfo.description = req.body.description || null;
+
+    console.log(itemInfo);
+
+    const [ success, response ] = await createItems(client, itemInfo.name, itemInfo.description, itemInfo.rarityID, itemInfo.typeID, itemInfo.amount, itemInfo.ownerID, itemInfo.attributes);
 
     if (success === false) { res.status(500).send(response); console.log(response); return; } 
 
