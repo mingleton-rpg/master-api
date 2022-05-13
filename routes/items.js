@@ -52,7 +52,7 @@ async function createItems(client, name, description, rarityID, typeID, amount, 
     // Create the item/s
     var returnIDs = [];
     for (var i = 0; i < amount; i++) {
-        var query = 'INSERT INTO items (name, description, rarity_id, type_id, owner_id, attributes) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id;';
+        var query = 'INSERT INTO items (name, description, rarity_id, type_id, owner_id, attributes) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id;';
         var params = [ name, description, rarityID, typeID, ownerID, JSON.stringify(attributes) ];
         var err, result = await client.query(query, params);
         if (err) { return [ false, 'Error occurred while creating' ]; }
