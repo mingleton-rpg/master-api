@@ -224,6 +224,68 @@ router.post('/create/', async function (req, res) {                     // Creat
     res.status(200).send(JSON.stringify({ itemIDs: response }));
 });
 
+router.post('/:id/edit/', async function (req, res) {                   // Edit item attributes
+
+    const client = req.client;
+
+    let itemInfo = {
+        itemID: req.params.id,
+        name: req.body.name,
+        rarityID: req.body.rarityID,
+        typeID: req.body.typeID,
+        ownerID: req.body.ownerID,
+        attributes: req.body.attributes,
+    }
+
+    console.log(itemInfo);
+
+    if (Object.values(itemInfo).every(x => x === null || x === '')) { 
+        res.status(400).send('Not all required values were provided'); return;
+    }
+
+    // Add non-required variables
+    itemInfo.description = req.body.description || null;
+
+    // Check for item type
+    const type = itemTypes.find(item => item.id == itemInfo.typeID);
+    if (!type) { res.status(403).send('Type with that ID does not exist'); return; }
+
+    // Check for item rarity
+    const rarity = itemRarities.find(item => item.id == itemInfo.rarityID);
+    if (!rarity) { res.status(403).send('Rarity with that ID does not exist'); return; }
+
+    // Check if that item exists
+    var query = 'SELECT * FROM items WHERE id = $1;';
+    var params = [ req.params.id ];
+    var err, result = await client.query(query, params);
+    if (err) { res.status(500).send('Internal server error'); }
+    if (result.rows.length === 0) { res.status(404).send('Nothing was found'); }
+
+    // Update that item
+    var query = 'UPDATE items SET name = $1, description = $2, rarity_id = $3, type_id = $4, owner_id = $5, attributes = $6 WHERE id  = $7;';
+    var params = [ itemInfo.name, itemInfo.description, itemInfo.rarityID, itemInfo.typeID, itemInfo.ownerID, JSON.stringify(itemInfo.attributes), itemInfo.itemID ];
+    var err, result = await client.query(query, params);
+    if (err) { res.status(500).send('Internal server error'); return; }
+
+    // Return success
+    res.status(200).send('Successfully edited item');
+});
+
+router.post('/:id/delete/', async function (req, res) {                 // Delete a variable
+    
+    const client = req.client;
+
+    if (!req.params.id) { res.status(400).send('Missing ID parameter'); return; }
+
+    // Delete the item
+    var query = 'DELETE FROM items WHERE id = $1;';
+    var params = [ req.params.id ];
+    var err, result = await client.query(query, params);
+    if (err) { res.status(500).send('Internal server error'); }
+
+    res.status(200).send('Successfully removed item');
+});
+
 router.post('/:id/equip/:isEquipping/', async function (req, res) {     // Equip/unequip item
     const client = req.client;
 

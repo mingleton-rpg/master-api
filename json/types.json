@@ -4,9 +4,11 @@
         "name" : "weapon (melee)",
         "emojiName" : "🗡",
         "maxStackAmount" : 1,
-        "isEquippable" : false,
+        "isEquippable" : true,
         "functions" : [
-            { "label": "swing", "id": "swing_weapon_", "style" : 2 }
+            { "label": "swing", "id": "weapon_swing_", "style" : 1 },
+            { "label": "equip", "id": "item_equip_", "style" : 2 },
+            { "label": "unequip", "id": "item_unequip_", "style" : 2 }
         ]
     },
     {
@@ -14,9 +16,11 @@
         "name" : "weapon (ranged)",
         "emojiName" : "🏹",
         "maxStackAmount" : 1,
-        "isEquippable" : false,
+        "isEquippable" : true,
         "functions" : [
-            { "label": "shoot", "id": "shoot_weapon_", "style" : 2 }
+            { "label": "shoot", "id": "weapon_shoot_", "style" : 1 },
+            { "label": "equip", "id": "item_equip_", "style" : 2 },
+            { "label": "unequip", "id": "item_unequip_", "style" : 2 }
         ]
     },
     {
@@ -26,7 +30,7 @@
         "maxStackAmount" : 16,
         "isEquippable" : false,
         "functions" : [
-            { "label": "throw", "id": "throw_weapon_", "style" : 2 }
+            { "label": "throw", "id": "weapon_throw_", "style" : 1 }
         ]
     },
     {
@@ -36,7 +40,7 @@
         "maxStackAmount" : 16,
         "isEquippable" : false,
         "functions" : [
-            { "label": "consume", "id": "consume_item_", "style" : 2 }
+            { "label": "consume", "id": "item_consume_", "style" : 1 }
         ]
     },
     {
@@ -46,7 +50,7 @@
         "maxStackAmount" : 16,
         "isEquippable" : false,
         "functions" : [
-            { "label": "consume", "id": "consume_item_", "style" : 2 }
+            { "label": "consume", "id": "item_consume_", "style" : 1 }
         ]
     },
     {
@@ -56,7 +60,7 @@
         "maxStackAmount" : 1,
         "isEquippable" : false,
         "functions" : [
-            { "label": "cast", "id": "cast_item_", "style" : 2 }
+            { "label": "cast", "id": "item_cast_", "style" : 1 }
         ]
     },
     {
@@ -66,8 +70,8 @@
         "maxStackAmount" : 1,
         "isEquippable" : true,
         "functions" : [
-            { "label": "equip", "id": "equip_armour_", "style" : 1 },
-            { "label": "unequip", "id": "unequip_armour_", "style" : 2 }
+            { "label": "equip", "id": "item_equip_", "style" : 2 },
+            { "label": "unequip", "id": "item_unequip_", "style" : 2 }
         ]
     },
     {
@@ -77,8 +81,8 @@
         "maxStackAmount" : 1,
         "isEquippable" : true,
         "functions" : [
-            { "label": "equip", "id": "equip_armour_", "style" : 1 },
-            { "label": "unequip", "id": "unequip_armour_", "style" : 2 }
+            { "label": "equip", "id": "item_equip_", "style" : 2 },
+            { "label": "unequip", "id": "item_unequip_", "style" : 2 }
         ]
     },
     {
@@ -88,8 +92,8 @@
         "maxStackAmount" : 1,
         "isEquippable" : true,
         "functions" : [
-            { "label": "equip", "id": "equip_armour_", "style" : 1 },
-            { "label": "unequip", "id": "unequip_armour_", "style" : 2 }
+            { "label": "equip", "id": "item_equip_", "style" : 2 },
+            { "label": "unequip", "id": "item_unequip_", "style" : 2 }
         ]
     },
     {
@@ -99,8 +103,8 @@
         "maxStackAmount" : 1,
         "isEquippable" : true,
         "functions" : [
-            { "label": "equip", "id": "equip_armour_", "style" : 1 },
-            { "label": "unequip", "id": "unequip_armour_", "style" : 2 }
+            { "label": "equip", "id": "item_equip_", "style" : 2 },
+            { "label": "unequip", "id": "item_unequip_", "style" : 2 }
         ]
     }
 ]
