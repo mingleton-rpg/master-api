@@ -105,13 +105,10 @@ async function transferItems(client, itemID, newOwnerID, isStack) {
         }
     }
 
-    // Transfer all the items
-    for (const item of items) { 
-        var query = 'UPDATE items SET owner_id = $1 WHERE id = $2;';
-        var params = [ newOwnerID, item.id ];
-        var err, result = await client.query(query, params);
-        if (err) { return [ false, 'An error occurred while transferring item' ]; }
-    }
+    var query = 'UPDATE items SET owner_id = $1 WHERE id = $2;';
+    var params = [ newOwnerID, itemID ];
+    var err, result = await client.query(query, params);
+    if (err) { return [ false, 'An error occurred while transferring item' ]; }
 
     console.log('Transferred items to user ', newOwnerID);
     return [ true, 'Successfully transferred item' ];
